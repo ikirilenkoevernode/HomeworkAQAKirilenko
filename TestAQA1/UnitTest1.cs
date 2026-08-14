@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net.Http.Json;
+using System.Text.Json;
 
 namespace TestAQA1
 {
@@ -19,7 +20,7 @@ namespace TestAQA1
         [Test]
         public async Task Test1()
         {
-            using HttpResponseMessage response = await client.GetAsync("users/25");
+            using HttpResponseMessage response = await client.GetAsync("users/2");
             response.EnsureSuccessStatusCode();
         }
         [Test]
@@ -29,6 +30,39 @@ namespace TestAQA1
             string jsonGet = await response.Content.ReadAsStringAsync();
             UserResponseDTO userResponse = JsonSerializer.Deserialize<UserResponseDTO>(jsonGet);
             UserDataDTO user = userResponse.Data;
+        }
+        [Test]
+        public async Task Test3()
+        {
+            CreateUserRequestDTO request = new CreateUserRequestDTO
+            {
+                Name = "John Worker",
+                Job = "QA ChillGuy"
+            };
+
+            using HttpResponseMessage response = await client.PostAsJsonAsync("users", request);
+            string jsonPost = await response.Content.ReadAsStringAsync();
+            CreateUserResponseTest3DTO userResponse = JsonSerializer.Deserialize<CreateUserResponseTest3DTO>(jsonPost);
+        }
+        [Test]
+        public async Task Test4()
+        {
+            CreateUserRequestDTO request = new CreateUserRequestDTO
+            {
+                Name = "John Worker",
+                Job = "QA Amongusuv"
+            };
+
+            using HttpResponseMessage response = await client.PutAsJsonAsync("users/2", request);
+            response.EnsureSuccessStatusCode();
+
+        }
+        [Test]
+        public async Task Test5()
+        {
+            using HttpResponseMessage response = await client.DeleteAsync("users/2");
+
+            response.EnsureSuccessStatusCode();
         }
         [OneTimeTearDown]
         public void TearDown()
