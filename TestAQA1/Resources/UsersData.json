@@ -41,7 +41,7 @@
             "username": "user3",
             "profile": {
                 "fullName": "Carol White",
-                "age": 22,
+                "age": 18,
                 "address": {
                     "street": "River St 7",
                     "city": "Göteborg",
@@ -59,7 +59,7 @@
             "username": "user4",
             "profile": {
                 "fullName": "David Brown",
-                "age": 45,
+                "age": 60,
                 "address": {
                     "street": "Pine Ave 9",
                     "city": "Malmö",

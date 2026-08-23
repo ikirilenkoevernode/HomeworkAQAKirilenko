@@ -2,7 +2,7 @@
 {
     using System.Text.Json.Serialization;
     public record ItemDTO
-    (
+    ( 
 
 
        [property: JsonPropertyName("productId")]
