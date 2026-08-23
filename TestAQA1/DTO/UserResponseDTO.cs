@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Text.Json.Serialization;
-
-public class UserResponseDTO
+namespace TestAQA1
 {
-    [JsonPropertyName("data")]
-    public UserDataDTO Data { get; set; }
+    public class UserResponseDTO
+    {
+        [JsonPropertyName("data")]
+        public UserDataDTO Data { get; set; }
+    }
 }
