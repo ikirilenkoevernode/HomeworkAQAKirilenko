@@ -7,111 +7,86 @@ namespace TestHomework15
     using System.Text.Json;
     using TestHomework15.DTO;
     using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
-
+    using HelpClasses;
     public class TestUserDataHomework15
     {
-        private RootDTO allUsers;
+        private List<UserInfo> Users = [];
+
         [OneTimeSetUp]
+
         public void Setup()
         {
-            var path = Path.Combine(TestContext.CurrentContext.TestDirectory, "Resources", "UsersData.json");
-            string json = File.ReadAllText(path);
-            allUsers = JsonSerializer.Deserialize<RootDTO>(json);
+            var json = FileReader.ReadFile("Resources/UsersData.json");
+            Users = JsonSerializer.Deserialize<RootDTO>(json).Data;       
         }
 
         [Test]
         public void Test1_CheckUsersCountTen()
         {
-            foreach (var user in allUsers.Data)
+            foreach (var user in Users)
             {
                 TestContext.WriteLine($" {user.Id}");
             }
-            allUsers.Data.Should().NotBeNull();
-            allUsers.Data.Should().HaveCount(10);
+            Users.Should().NotBeNull();
+            Users.Should().HaveCount(10);
         }
         [Test]
         public void Test2_CheckFirstUserName()
         {
-            TestContext.WriteLine($" {allUsers.Data[0].Profile.FullName}");
-            allUsers.Data[0].Should().NotBeNull();
-            allUsers.Data[0].Profile.FullName.Should().Be("Alice Johnson");
+            var firstUser = Users.First();
+            TestContext.WriteLine($" {firstUser.Profile.FullName}");
+            firstUser.Should().NotBeNull();
+            firstUser.Profile.FullName.Should().Be("Alice Johnson");
         }
         [Test]
         public void Test3_CheckUserUniqueId()
         {
-            foreach (var user in allUsers.Data)
+
+            var ids = Users.Select(u => u.Id).ToList();
+            foreach (var id in ids)
             {
-                TestContext.WriteLine($" {user.Id}");
+                TestContext.WriteLine($" {id}");
             }
-            var allId = allUsers.Data
-                .Select(x => x.Id)
-                .ToList();
-            allId.Should().OnlyHaveUniqueItems();
+            ids.Should().OnlyHaveUniqueItems();
         }
         [Test]
         public void Test4_AtLeastOnePremium()
         {
-            List<string> tags = [];
-            foreach (var user in allUsers.Data)
-            {
-                foreach (var tag in user.Profile.Tags)
-                {
-                    TestContext.WriteLine($" {tag}");
-                    tags.Add(tag.ToLower());
-                }
-
-            }
-            tags.Should().Contain("premium");
+            var premiumUsers = Users.Where(u => u.Profile.Tags.Contains("premium")).ToList();
+            premiumUsers.Should().NotBeEmpty();
         }
         [Test]
         public void Test5_CheckCitesNotNull()
         {
-            foreach (var user in allUsers.Data)
-            {
-                TestContext.WriteLine($" {user.Profile.Address.City}");
-                user.Profile.Address.City.Should().NotBeNull();
-
-            }
+            var cities = Users.Select(u => u.Profile.Address.City).ToList();
+            cities.Should().OnlyContain(c => !string.IsNullOrWhiteSpace(c));
         }
         [Test]
         public void Test6_CheckIfOneisFromStockholm()
         {
-            List<string> cities = [];
-            foreach (var user in allUsers.Data)
-            {
-                TestContext.WriteLine($" {user.Profile.Address.City}");
-                cities.Add(user.Profile.Address.City.ToLower());
-            }
-            cities.Should().Contain("stockholm");
+            var stockholmUser = Users.FirstOrDefault(u => u.Profile.Address.City == "Stockholm");
+            stockholmUser.Should().NotBeNull();
         }
         [Test]
         public void Test7_CheckUserAgeIsFrom18To60()
         {
-            foreach (var user in allUsers.Data)
+            var ages = Users.Select(u => u.Profile.Age).ToList();
+            foreach (var age in ages)
             {
-                TestContext.WriteLine($" {user.Profile.Age}");
-                user.Profile.Age.Should().BeInRange(18, 60);
+                TestContext.WriteLine($" {age}");
             }
+            ages.Should().OnlyContain(age => age >= 18 && age <= 60);
         }
         [Test]
         public void Test8_CheckAtLeastOneAdmin()
         {
-            List<string> roles = [];
-            foreach (var user in allUsers.Data)
-            {
-                foreach (var role in user.Roles)
-                {
-                    TestContext.WriteLine($" {role}");
-                    roles.Add(role.ToLower());
-                }
-
-            }
-            roles.Should().Contain("admin");
+            var admins = Users.Where(u => u.Roles.Contains("admin")).ToList();
+            admins.Should().NotBeEmpty();
         }
         [Test]
         public void TestExtra3()
         {
-            foreach (var user in allUsers.Data)
+            foreach (var user in Users)
             {
                 var geo = user.Profile.Address.Geo;
                 TestContext.WriteLine($"{geo}");
@@ -122,7 +97,7 @@ namespace TestHomework15
         [Test]
         public void TestExtra4()
         {
-            foreach (var user in allUsers.Data)
+            foreach (var user in Users)
             {
                 var street = user.Profile.Address.Street;
                 street.Should().MatchRegex(@"\d+");

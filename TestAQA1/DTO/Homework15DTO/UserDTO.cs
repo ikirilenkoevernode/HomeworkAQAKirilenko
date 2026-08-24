@@ -1,7 +1,7 @@
 ﻿namespace TestHomework15.DTO
 {
     using System.Text.Json.Serialization;
-    public record User(
+    public record UserInfo(
         [property: JsonPropertyName("id")]
     int Id,
 

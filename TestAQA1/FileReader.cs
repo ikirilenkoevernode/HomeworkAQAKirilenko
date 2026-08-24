@@ -1,11 +1,18 @@
-﻿public static class FileReader
+﻿
+namespace HelpClasses
 {
-    public static string ReadFile(string filePath)
+    public static class FileReader
     {
-        return File.ReadAllText(filePath);
-    }
-    public static string[] ReadLines(string filePath)
-    {
-        return File.ReadAllLines(filePath);
+        public static string ReadFile(string filePath)
+        {
+            string fullPath = Path.Combine(AppContext.BaseDirectory, filePath);
+            return File.ReadAllText(fullPath);
+        }
+
+        public static string[] ReadLines(string filePath)
+        {
+            string fullPath = Path.Combine(AppContext.BaseDirectory, filePath);
+            return File.ReadAllLines(fullPath);
+        }
     }
 }

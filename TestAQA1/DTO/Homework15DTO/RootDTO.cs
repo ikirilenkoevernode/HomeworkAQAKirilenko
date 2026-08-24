@@ -3,6 +3,6 @@
     using System.Text.Json.Serialization;
     public record RootDTO(
         [property: JsonPropertyName("data")]
-    List<User> Data
+    List<UserInfo> Data
     );
 }
