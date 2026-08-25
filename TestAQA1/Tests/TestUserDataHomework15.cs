@@ -1,19 +1,16 @@
-﻿
+﻿using FluentAssertions;
+using FluentAssertions.Execution;
+using System.Data;
+using System.Text.Json;
+using TestHomework15.DTO;
+using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
+using HelpClasses;
 namespace TestHomework15
 {
-    using FluentAssertions;
-    using FluentAssertions.Execution;
-    using System.Data;
-    using System.Text.Json;
-    using TestHomework15.DTO;
-    using static Microsoft.ApplicationInsights.MetricDimensionNames.TelemetryContext;
-    using HelpClasses;
     public class TestUserDataHomework15
     {
         private List<UserInfo> Users = [];
-
         [OneTimeSetUp]
-
         public void Setup()
         {
             var json = FileReader.ReadFile("Resources/UsersData.json");
@@ -30,6 +27,7 @@ namespace TestHomework15
             Users.Should().NotBeNull();
             Users.Should().HaveCount(10);
         }
+
         [Test]
         public void Test2_CheckFirstUserName()
         {
@@ -38,6 +36,7 @@ namespace TestHomework15
             firstUser.Should().NotBeNull();
             firstUser.Profile.FullName.Should().Be("Alice Johnson");
         }
+
         [Test]
         public void Test3_CheckUserUniqueId()
         {
@@ -49,24 +48,28 @@ namespace TestHomework15
             }
             ids.Should().OnlyHaveUniqueItems();
         }
+
         [Test]
         public void Test4_AtLeastOnePremium()
         {
             var premiumUsers = Users.Where(u => u.Profile.Tags.Contains("premium")).ToList();
             premiumUsers.Should().NotBeEmpty();
         }
+
         [Test]
         public void Test5_CheckCitesNotNull()
         {
             var cities = Users.Select(u => u.Profile.Address.City).ToList();
             cities.Should().OnlyContain(c => !string.IsNullOrWhiteSpace(c));
         }
+
         [Test]
         public void Test6_CheckIfOneisFromStockholm()
         {
             var stockholmUser = Users.FirstOrDefault(u => u.Profile.Address.City == "Stockholm");
             stockholmUser.Should().NotBeNull();
         }
+
         [Test]
         public void Test7_CheckUserAgeIsFrom18To60()
         {
@@ -77,12 +80,14 @@ namespace TestHomework15
             }
             ages.Should().OnlyContain(age => age >= 18 && age <= 60);
         }
+
         [Test]
         public void Test8_CheckAtLeastOneAdmin()
         {
             var admins = Users.Where(u => u.Roles.Contains("admin")).ToList();
             admins.Should().NotBeEmpty();
         }
+
         [Test]
         public void TestExtra3()
         {
@@ -94,6 +99,7 @@ namespace TestHomework15
                 geo.Lng.Should().BeInRange(11, 24);
             }
         }
+
         [Test]
         public void TestExtra4()
         {

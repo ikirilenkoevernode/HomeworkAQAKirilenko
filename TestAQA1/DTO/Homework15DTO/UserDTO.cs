@@ -4,15 +4,11 @@
     public record UserInfo(
         [property: JsonPropertyName("id")]
     int Id,
-
         [property: JsonPropertyName("username")]
     string Username,
-
         [property: JsonPropertyName("profile")]
     Profile Profile,
-
         [property: JsonPropertyName("roles")]
     List<string> Roles
     );
-
 }
