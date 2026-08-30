@@ -1,19 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Tests1.DTO;
 using Refit;
-using TestAQA1;
-namespace TestAQA2  
+
+namespace Tests1.Interfaces
 {
-    [Headers("x-api-key: free_user_3Hs5R7VxAD3zzrYAcdt3Anqc5bY")]
+    [Headers("x-api-key: free_user_3HxNFNxHA5PT2D4rTd3FTeB0AOM")]
     public interface IUserApi
     {
         [Get("/users/{id}")]
-        Task<UserResponseDTO> GetUserAync(int id);
+        Task<UserResponseDTO> GetUserAsync(int id);
+        [Get("/users/{id}")]
+        Task<ApiResponse<string>> GetUserStatusAsync(int id);
         [Post("/users")]
-        Task<CreateUserRequestDTO> CreateUserAsync([Body] CreateUserRequestDTO request);
+        Task<CreateUserResponseDTO> CreateUserAsync([Body] CreateUserRequestDTO request);
+        [Put("/users/{id}")]
+        Task<ApiResponse<string>> UpdateUserAsync(int id, [Body] CreateUserRequestDTO request);
         [Delete("/users/{id}")]
         Task<ApiResponse<string>> DeleteUserAsync(int id);
     }
 }
-
