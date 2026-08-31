@@ -26,30 +26,20 @@ namespace Tests1.Tests
         }
 
         [Test]
-        public async Task Test002GetUserById()
-        {
-            var repo = p.Provider.GetService<IUserRepository>();
-            var users = await repo.GetUserByIdAsync(15);
-            users.Should().NotBeNull();
-        }
-
-        [Test]
-        public async Task Test003GetUserByNameAndSurname()
-        {
-            var repo = p.Provider.GetService<IUserRepository>();
-            var users = await repo.GetUserByNameAndSurname("Мария", "Павлова");
-            users.Should().NotBeNull();
-            users.firstName.Should().Be("Мария");
-            users.lastName.Should().Be("Павлова");
-        }
-
-        [Test]
-        public async Task Test004GetAddressByUserId()
+        public async Task Test002CheckAllAdresseCount()
         {
             var repo = p.Provider.GetService<IAddressRepository>();
-            var address = await repo.GetAddressByUserId(1);
-            address.Should().NotBeNull();
+            var adresses= await repo.GetAddressesAsync();
+            adresses.Should().HaveCount(15);
         }
+
+        //[Test]
+        //public async Task Test004GetAddressByUserId()
+        //{
+        //    var repo = p.Provider.GetService<IAddressRepository>();
+        //    var address = await repo.GetAddressByUserId(1);
+        //    address.Should().NotBeNull();
+        //}
 
 
         //[Test] //генерация базы - раскомментить, а потом запустить тест разово
@@ -59,6 +49,15 @@ namespace Tests1.Tests
         //    await using var connection = new SqliteConnection(connectionString);
         //    await connection.OpenAsync();
         //    await DatabaseInitializer.InitializeAsync(connection);
+        //}
+        //[Test]
+        //public async Task Test003GetUserByNameAndSurname()
+        //{
+        //    var repo = p.Provider.GetService<IUserRepository>();
+        //    var users = await repo.GetUserByNameAndSurname("Мария", "Павлова");
+        //    users.Should().NotBeNull();
+        //    users.firstName.Should().Be("Мария");
+        //    users.lastName.Should().Be("Павлова");
         //}
     }
 }

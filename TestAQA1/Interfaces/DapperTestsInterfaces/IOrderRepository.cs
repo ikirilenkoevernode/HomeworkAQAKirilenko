@@ -5,9 +5,8 @@ using Tests1.DTO.DapperTestsDTO;
 
 namespace Tests1.Interfaces.DapperTestsInterfaces
 {
-    public interface IAddressRepository
+    public interface IOrderRepository
     {
-        Task<AddressDTO> GetAddressByUserId (int userId);
-        Task<IEnumerable<AddressDTO>> GetAddressesAsync();
+        Task<OrderDTO> GetOrderByOrderId(int orderId);
     }
 }
