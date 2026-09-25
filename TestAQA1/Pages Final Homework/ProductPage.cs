@@ -11,6 +11,17 @@ namespace TestAQA.Pages
         private ILocator CartButton =>
             Page.GetByTestId("shopping-cart-link");
 
+        private ILocator AddToCartButton(string productName) =>
+            Page
+                .Locator(".inventory_item")
+                .Filter(new LocatorFilterOptions
+                {
+                    HasText = productName
+                })
+                .GetByRole(
+                    AriaRole.Button,
+                    new() { Name = "Add to cart" });
+
         public ProductsPage(IPage page) : base(page)
         {
         }
@@ -22,19 +33,7 @@ namespace TestAQA.Pages
 
         public async Task AddToCartAsync(string productName)
         {
-            var product = Page
-                .Locator(".inventory_item")
-                .Filter(new LocatorFilterOptions
-                {
-                    HasText = productName
-                });
-
-            await product
-                .GetByRole(AriaRole.Button, new()
-                {
-                    Name = "Add to cart"
-                })
-                .ClickAsync();
+            await AddToCartButton(productName).ClickAsync();
         }
 
         public async Task<CartPage> OpenCartAsync()

@@ -2,40 +2,13 @@
 using Microsoft.Playwright;
 using NUnit.Framework;
 using TestAQA.Pages;
-using Microsoft.Playwright;
-using static System.Net.Mime.MediaTypeNames;
+using TestAQA.Tests;
 
 namespace TestAQA.Tests
 {
     [TestFixture]
-    public class CheckoutTests
+    public class CheckoutTests : BaseUITest
     {
-        private IPlaywright _playwright = null!;
-        private IBrowser _browser = null!;
-        private IPage _page = null!;
-
-        [SetUp]
-        public async Task SetUp()
-        {
-            _playwright = await Playwright.CreateAsync();
-            _playwright.Selectors.SetTestIdAttribute("data-test");
-            _browser = await _playwright.Chromium.LaunchAsync(
-                new BrowserTypeLaunchOptions
-                {
-                    Headless = false,
-                    SlowMo = 600
-                });
-
-            _page = await _browser.NewPageAsync();
-        }
-
-        [TearDown]
-        public async Task TearDown()
-        {
-            await _browser.CloseAsync();
-            _playwright.Dispose();
-        }
-
         [Test]
         public async Task UserCanBuyTwoProducts()
         {
@@ -47,13 +20,13 @@ namespace TestAQA.Tests
             const string product2 = "Sauce Labs Bike Light";
 
             // 1-2. Open site and login
-            var loginPage = new LoginPage(_page);
+            var loginPage = new LoginPage(Page);
 
             await loginPage.OpenAsync();
             await loginPage.LoginAsync(username, password);
 
             // 3. Check Products page
-            var productsPage = new ProductsPage(_page);
+            var productsPage = new ProductsPage(Page);
 
             (await productsPage.IsOpenedAsync())
                 .Should()
@@ -81,7 +54,7 @@ namespace TestAQA.Tests
             await checkoutPage.FillInformationAsync(
                 "Pepe",
                 "Test",
-                "10001");
+                "67");
 
             var overviewPage = await checkoutPage.ContinueAsync();
 
