@@ -9,6 +9,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DTO\Pages\**" />
+    <EmbeddedResource Remove="DTO\Pages\**" />
+    <None Remove="DTO\Pages\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="coverlet.collector" Version="6.0.4" />
     <PackageReference Include="Dapper" Version="2.1.79" />
     <PackageReference Include="FluentAssertions" Version="8.10.0" />
