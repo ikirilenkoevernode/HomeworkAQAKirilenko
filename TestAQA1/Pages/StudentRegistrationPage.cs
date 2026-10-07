@@ -24,6 +24,9 @@ public class StudentRegistrationPage
     private ILocator Mobile =>
         _page.GetByPlaceholder("Mobile Number");
 
+    private ILocator Gender(string gender) =>
+        _page.GetByText(gender, new() { Exact = true });
+
     private ILocator SubmitButton =>
         _page.GetByRole(
             AriaRole.Button,
@@ -47,9 +50,7 @@ public class StudentRegistrationPage
         await Email.FillAsync(student.Email);
         await Mobile.FillAsync(student.Mobile);
 
-        await _page
-            .GetByText(student.Gender, new() { Exact = true })
-            .ClickAsync();
+        await Gender(student.Gender).ClickAsync();
     }
 
     public async Task SubmitAsync()
