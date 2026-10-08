@@ -2,7 +2,7 @@
 
 public class StudentFormBuilder
 {
-    private readonly StudentForm student = new();
+    private StudentForm student = new StudentForm();
 
     public StudentFormBuilder WithFirstName(string firstName)
     {
